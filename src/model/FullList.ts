@@ -7,6 +7,7 @@ interface List {
     clear(): void,
     addItem(itemObj: ListItem): void,
     removeItem(id: string): void,
+    editItem(id: string, newText: string): void,
 }
 
 export default class FullList implements List {
@@ -45,6 +46,14 @@ export default class FullList implements List {
 
     removeItem(id: string): void {
         this._list = this._list.filter(item => item.id !== id);
+        this.save();
+    }
+
+    editItem(id: string, newValue: string): void {
+        const item = this._list.find(i => i.id === id);
+        if (!item || !newValue.trim()) return;
+
+        item.item = newValue.trim();
         this.save();
     }
 }

@@ -74,7 +74,7 @@ section {
     padding: 0.5em;
 }
 
-.newItemEntry__button {
+.newItemEntry__button, .item input[type="checkbox"] {
     background-color: transparent;
     color: whitesmoke;
     border: 3px dashed whitesmoke;
@@ -100,7 +100,7 @@ section {
     align-items: flex-end;
 }
 
-.listTitle__button {
+.listTitle__button, .item input[type="checkbox"] {
     background-color: transparent;
     color: whitesmoke;
     padding: 0.25em;
@@ -119,13 +119,28 @@ section {
     align-items: center;
     padding-top: 1em;
     gap: 1em;
+    justify-content: space-between;
 }
 
-.item > input[type="checkbox"] {
-    text-align: center;
-    min-width: 2.5rem;
-    min-height: 2.5rem;
+/* .item > input[type="checkbox"] {    
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
     cursor: pointer;
+} */
+
+.item input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    /* border: 20px solid #333;
+    border-radius: 25px; */
+    cursor: pointer;
+    display: grid;
+    place-content: center;
+}
+
+.item input[type="checkbox"]:checked {
+    background: #4caf50;
 }
 
 .item > input[type="checkbox"]:checked + label {
@@ -140,6 +155,12 @@ section {
 .item > button:hover, 
 .item > button:focus {
     color: red;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 @media (min-width: 768px) {
