@@ -48,8 +48,17 @@ export default class ListTemplate implements DOMList {
             input.style.display = 'none';
 
             input.addEventListener('blur', () => {
-                fullList.editItem(item.id, input.value);
-                this.render(fullList);
+                saveEdit();
+            });
+
+            input.addEventListener('keydown', (e: KeyboardEvent) => {
+                if (e.key === 'Enter') {
+                    saveEdit();
+                }
+
+                if (e.key === 'Escape') {
+                    cancelEdit();
+                }
             });
 
             const label = document.createElement('span');
@@ -82,6 +91,19 @@ export default class ListTemplate implements DOMList {
             li.append(button);
 
             this.ul.append(li);
+
+            let isCancelled = false;
+
+            const saveEdit = () => {
+                if (isCancelled) return;
+                fullList.editItem(item.id, input.value);
+                this.render(fullList);
+            };
+
+            const cancelEdit = () => {
+                isCancelled = true;
+                this.render(fullList);
+            };
         })
     }
 }
