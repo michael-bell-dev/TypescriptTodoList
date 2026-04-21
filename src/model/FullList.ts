@@ -8,6 +8,7 @@ interface List {
     addItem(itemObj: ListItem): void,
     removeItem(id: string): void,
     editItem(id: string, newText: string): void,
+    reorder(draggedId: string, targetId: string): void,
 }
 
 export default class FullList implements List {
@@ -54,6 +55,18 @@ export default class FullList implements List {
         if (!item || !newValue.trim()) return;
 
         item.item = newValue.trim();
+        this.save();
+    }
+
+    reorder(draggedId: string, targetId: string): void {
+        const draggedIndex = this._list.findIndex(i => i.id === draggedId);
+        const targetIndex = this._list.findIndex(i => i.id === targetId);
+
+        if (draggedIndex === -1 || targetIndex === -1) return;
+
+        const [draggedItem] = this._list.splice(draggedIndex, 1);
+        this._list.splice(targetIndex, 0, draggedItem);
+
         this.save();
     }
 }

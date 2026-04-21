@@ -23,6 +23,10 @@ export default class ListTemplate implements DOMList {
         this.clear();
 
         fullList.list.forEach(item => {
+            this.ul.addEventListener('dragover', (e: DragEvent) => {
+                e.preventDefault();
+            });
+
             const li = document.createElement('li') as HTMLLIElement;
             li.className = 'item';
 
@@ -37,10 +41,6 @@ export default class ListTemplate implements DOMList {
                 fullList.save();
             })
 
-            // const label = document.createElement('label') as HTMLLabelElement;
-            // label.htmlFor = item.id;
-            // label.textContent = item.item;
-            // li.append(label);
             const input = document.createElement('input') as HTMLInputElement;
             input.type = 'text';
             input.value = item.item;
@@ -87,6 +87,14 @@ export default class ListTemplate implements DOMList {
             content.append(label);
             content.append(input);
 
+            li.draggable = true;
+            li.dataset.id = item.id;
+
+            li.addEventListener('dragstart', (e: DragEvent) => {
+                if (!e.dataTransfer) return;
+                e.dataTransfer.setData('text/plain', item.id);
+            });
+
             li.append(content);
             li.append(button);
 
@@ -105,5 +113,21 @@ export default class ListTemplate implements DOMList {
                 this.render(fullList);
             };
         })
+
+        this.ul.ondrop = (e: DragEvent) => {
+            e.preventDefault();
+            if (!e.dataTransfer) return;
+
+            const draggedId = e.dataTransfer.getData('text/plain');
+
+            const target = (e.target as HTMLElement).closest('li') as HTMLLIElement;
+            if (!target) return;
+
+            const targetId = target.dataset.id;
+            if (!targetId || draggedId === targetId) return;
+
+            fullList.reorder(draggedId, targetId);
+            this.render(fullList);
+        };
     }
 }
