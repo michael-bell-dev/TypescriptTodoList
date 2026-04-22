@@ -44,3 +44,6 @@ This project focuses on building a maintainable frontend architecture without fr
 2. Install dependencies:
    ```bash
    npm install
+3. Start development server:
+   ```bash
+   npm run dev
